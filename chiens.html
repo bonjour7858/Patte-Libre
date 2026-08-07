@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt'SPA — Chiens</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <!-- En-tête -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <span class="text-2xl">🐾</span>
+                <span class="text-xl font-bold tracking-tight text-slate-900">Adopt'SPA</span>
+            </a>
+            <a href="index.html" class="text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition">← Retour aux catégories</a>
+        </div>
+    </header>
+
+    <!-- Avertissement Légal -->
+    <div class="bg-amber-50 border-b border-amber-200/60 py-3 px-6 text-center">
+        <p class="text-xs sm:text-sm text-amber-800 font-medium max-w-4xl mx-auto">
+            ⚠️ <strong>Avertissement :</strong> Ce site n'est en AUCUN cas un site officiel de la SPA. Outil de recherche indépendant.
+        </p>
+    </div>
+
+    <!-- Contenu Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-10">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight text-slate-900">Nos Chiens à l'adoption</h2>
+                <p class="text-sm text-slate-500 mt-1">Trouvez votre futur compagnon canin.</p>
+            </div>
+
+            <!-- Boutons de sous-catégories (Filtres) -->
+            <div class="flex flex-wrap gap-2" id="filtres-container">
+                <button onclick="filtrerSousCategorie('tous')" class="filtre-btn active bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-full transition shadow-sm">Tous</button>
+                <button onclick="filtrerSousCategorie('bebe')" class="filtre-btn bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs font-semibold px-4 py-2 rounded-full transition">Bébés</button>
+                <button onclick="filtrerSousCategorie('adulte')" class="filtre-btn bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs font-semibold px-4 py-2 rounded-full transition">Adultes</button>
+                <button onclick="filtrerSousCategorie('sos')" class="filtre-btn bg-white border border-slate-200 text-red-600 hover:bg-red-50 text-xs font-semibold px-4 py-2 rounded-full transition border-red-200">🚨 SOS</button>
+            </div>
+        </div>
+
+        <!-- Grille des animaux -->
+        <div id="animaux-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Injecté dynamiquement -->
+        </div>
+    </main>
+
+    <!-- Pop-up (Modal) -->
+    <div id="modal" class="modal-hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl relative animate-in">
+            <button onclick="fermerModal()" class="absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 w-9 h-9 rounded-full flex items-center justify-center font-bold shadow-md transition">✕</button>
+            
+            <div class="relative h-72">
+                <img id="modal-img" src="" alt="Animal" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div class="absolute bottom-4 left-6 right-6 text-white">
+                    <span id="modal-age" class="inline-block bg-white/20 backdrop-blur-md text-xs font-semibold px-3 py-1 rounded-full mb-2"></span>
+                    <h2 id="modal-nom" class="text-3xl font-bold tracking-tight"></h2>
+                </div>
+            </div>
+
+            <div class="p-8">
+                <p id="modal-race" class="text-sm font-semibold text-indigo-600 uppercase tracking-wider mb-4"></p>
+                
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl mb-6">
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Refuge d'accueil</p>
+                    <p id="modal-refuge" class="text-slate-800 font-medium"></p>
+                </div>
+
+                <div class="mb-8">
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">À propos</p>
+                    <p id="modal-info" class="text-slate-600 text-sm leading-relaxed"></p>
+                </div>
+
+                <a id="modal-lien" href="#" target="_blank" class="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3.5 px-6 rounded-2xl transition shadow-lg shadow-indigo-600/20">
+                    Voir l'annonce officielle sur la SPA &nearr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 Adopt'SPA — Tous droits réservés. Projet indépendant non officiel.</p>
+    </footer>
+
+    <!-- Script spécifique à cette page -->
+    <script>
+        // Spécifiez la catégorie de cette page ('chien', 'chat', 'nac', 'ferme')
+        const CATEGORIE_PAGE = "chien"; 
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
