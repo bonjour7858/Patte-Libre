@@ -1,0 +1,12 @@
+/* Classes utilitaires pour gérer l'affichage de la modale */
+.modal-hidden {
+    display: none;
+}
+
+.modal-visible {
+    display: flex;
+}
+
+body {
+    scroll-behavior: smooth;
+}
