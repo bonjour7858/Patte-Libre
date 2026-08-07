@@ -1,3 +1,10 @@
+/* --- Structure globale --- */
+body {
+    scroll-behavior: smooth;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- Modale --- */
 .modal-hidden {
     display: none;
 }
@@ -6,6 +13,7 @@
     display: flex;
 }
 
+/* Animation d'entrée de la modale */
 @keyframes fadeInScale {
     from {
         opacity: 0;
@@ -21,6 +29,35 @@
     animation: fadeInScale 0.25s ease-out forwards;
 }
 
-body {
-    scroll-behavior: smooth;
+/* --- Transitions globales pour le Dark Mode --- */
+/* On applique des transitions sur tous les éléments qui changent de couleur */
+header, 
+footer, 
+.bg-white, 
+.bg-slate-50, 
+.bg-slate-900, 
+.bg-slate-950, 
+.text-slate-800, 
+.text-slate-600, 
+.text-slate-100, 
+.text-slate-300, 
+.text-slate-400, 
+.border-slate-200, 
+.border-slate-800 {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- Effets visuels sur les boutons filtres --- */
+.filtre-btn {
+    transition: all 0.2s ease;
+}
+
+/* --- Ajustement pour les images --- */
+img {
+    transition: transform 0.5s ease;
+}
+
+/* --- Utilitaires de survol --- */
+.hover-shadow:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
