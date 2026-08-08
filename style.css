@@ -1,5 +1,4 @@
-
-/* style.css — Styles personnalisés pour Patte Libre */
+/* style.css — Styles globaux et transitions fluides */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -8,7 +7,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Effets fluides pour les cartes */
+/* Animations de survol */
 .animal-card, .category-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -17,18 +16,22 @@ html {
     transform: translateY(-4px);
 }
 
-/* Barre de défilement personnalisée */
+/* Scrollbar personnalisée */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
 }
 
 ::-webkit-scrollbar-thumb:hover {
