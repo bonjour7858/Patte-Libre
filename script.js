@@ -13,11 +13,35 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('themeToggle').textContent = '☀️';
     }
 
-    // Catégories
+    let currentCategory = null;
+    let currentSubCategory = 'tous';
+
+    // Gestion du clic sur les grandes catégories
     document.querySelectorAll('.category-card').forEach(card => {
         card.addEventListener('click', () => {
+            const selectedCategory = card.getAttribute('data-category');
+            const isAlreadyActive = card.classList.contains('ring-2');
+            
             document.querySelectorAll('.category-card').forEach(c => c.classList.remove('ring-2', 'ring-indigo-500'));
-            card.classList.add('ring-2', 'ring-indigo-500');
+            
+            if (isAlreadyActive) {
+                currentCategory = null;
+            } else {
+                card.classList.add('ring-2', 'ring-indigo-500');
+                currentCategory = selectedCategory;
+            }
+            loadAnimals(currentCategory, currentSubCategory);
+        });
+    });
+
+    // Gestion du clic sur les sous-catégories (bébés, adultes, SOS)
+    document.querySelectorAll('.sub-category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sub-category-btn').forEach(b => b.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-950'));
+            btn.classList.add('ring-2', 'ring-indigo-500');
+            
+            currentSubCategory = btn.getAttribute('data-sub');
+            loadAnimals(currentCategory, currentSubCategory);
         });
     });
 
@@ -57,14 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
             shelter: document.getElementById('animalShelter').value,
             image: document.getElementById('animalImage').value,
             link: document.getElementById('animalLink').value,
-            desc: document.getElementById('animalDesc').value
+            desc: document.getElementById('animalDesc').value,
+            category: "Chiens", // Valeur par défaut
+            subCategory: "adultes" // Valeur par défaut
         };
 
         let animals = JSON.parse(localStorage.getItem('patteLibreAnimals')) || [];
         animals.unshift(newAnimal);
         localStorage.setItem('patteLibreAnimals', JSON.stringify(animals));
 
-        loadAnimals();
+        loadAnimals(currentCategory, currentSubCategory);
         closeAdd();
         e.target.reset();
         alert("Annonce publiée avec succès !");
@@ -110,38 +136,45 @@ function loadManageList() {
     listContainer.innerHTML = html;
 }
 
-function loadAnimals() {
+function loadAnimals(filterCategory = null, filterSub = 'tous') {
     const grid = document.getElementById('animalsGrid');
-    let html = `
-        <div class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-lg animal-card">
-            <div class="relative h-64 bg-slate-900">
-                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=600" alt="Rex" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-                <div class="absolute top-4 left-4 bg-slate-900/60 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-medium">3 ans</div>
-                <div class="absolute bottom-4 left-4 text-white">
-                    <h3 class="text-2xl font-black tracking-wide">Rex</h3>
-                </div>
-            </div>
-            <div class="p-6">
-                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Berger Allemand</span>
-                <div class="mt-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500">Refuge d'accueil</p>
-                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">Refuge de Paris (Gennevilliers)</p>
-                </div>
-                <div class="mt-4">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500">À propos</p>
-                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Un chien très joueur, adore les balades et l'eau.</p>
-                </div>
-                <a href="#" target="_blank" class="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center space-x-2">
-                    <span>Voir l'annonce officielle</span>
-                    <span>↗</span>
-                </a>
-            </div>
-        </div>
-    `;
+    if (!grid) return;
+    
+    let defaultAnimals = [
+        {
+            id: 'default-1',
+            name: 'Rex',
+            age: '3 ans',
+            breed: 'Berger Allemand',
+            shelter: "Refuge de Paris (Gennevilliers)",
+            image: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=600",
+            link: "#",
+            desc: "Un chien très joueur, adore les balades et l'eau.",
+            category: "Chiens",
+            subCategory: "adultes"
+        }
+    ];
 
-    let animals = JSON.parse(localStorage.getItem('patteLibreAnimals')) || [];
-    animals.forEach(animal => {
+    let customAnimals = JSON.parse(localStorage.getItem('patteLibreAnimals')) || [];
+    let allAnimals = [...defaultAnimals, ...customAnimals];
+
+    // Filtrage grande catégorie
+    if (filterCategory) {
+        allAnimals = allAnimals.filter(a => a.category === filterCategory);
+    }
+
+    // Filtrage sous-catégorie (bébés, adultes, sos)
+    if (filterSub && filterSub !== 'tous') {
+        allAnimals = allAnimals.filter(a => a.subCategory === filterSub);
+    }
+
+    if (allAnimals.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 text-sm">Aucun pensionnaire trouvé pour cette sélection.</div>`;
+        return;
+    }
+
+    let html = '';
+    allAnimals.forEach(animal => {
         html += `
             <div class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-lg animal-card">
                 <div class="relative h-64 bg-slate-900">
