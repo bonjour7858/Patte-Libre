@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patte Libre — Outil de recherche indépendant</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -59,7 +58,6 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between transition-colors duration-300">
 
-    <!-- Header & Bandeau d'avertissement -->
     <div>
         <div class="bg-amber-50 dark:bg-amber-950/50 border-b border-amber-200 dark:border-amber-900 py-2 px-4 text-center text-xs text-amber-800 dark:text-amber-300 font-medium">
             ⚠️ <strong>Avertissement :</strong> Ce site n'est en AUCUN cas un site officiel. Outil de recherche indépendant.
@@ -82,13 +80,12 @@
             </nav>
 
             <div class="flex items-center space-x-4">
-                <button id="themeToggle" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm cursor-pointer" title="Changer de thème">🌙</button>
-                <a href="#" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm transition-all">Se connecter</a>
+                <button id="themeToggle" onclick="toggleTheme()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm cursor-pointer" title="Changer de thème">🌙</button>
+                <button onclick="openLoginModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm transition-all cursor-pointer">Se connecter</button>
             </div>
         </header>
     </div>
 
-    <!-- Contenu Principal -->
     <main class="max-w-5xl mx-auto px-4 py-12 flex flex-col items-center flex-grow w-full">
         <div class="text-center max-w-xl mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">
@@ -103,42 +100,39 @@
             </div>
         </div>
 
-        <!-- Grille des Catégories -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full mb-12">
-            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div onclick="selectCategory(this, 'Chiens')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐶</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Chiens</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Compagnons fidèles</p>
             </div>
 
-            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div onclick="selectCategory(this, 'Chats')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐱</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Chats</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Boules de poils</p>
             </div>
 
-            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div onclick="selectCategory(this, 'NAC')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-purple-50 dark:bg-purple-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐰</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">NAC</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Nouveaux animaux</p>
             </div>
 
-            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div onclick="selectCategory(this, 'Ferme')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐐</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Ferme</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Grands espaces</p>
             </div>
         </div>
 
-        <!-- Filtres Rapides interactifs -->
         <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition-all shadow-sm cursor-pointer">Tous</button>
-            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Bébés</button>
-            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Adultes</button>
-            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-red-500 text-white transition-all shadow-sm cursor-pointer">SOS</button>
+            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition-all shadow-sm cursor-pointer">Tous</button>
+            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Bébés</button>
+            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Adultes</button>
+            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-red-500 text-white transition-all shadow-sm cursor-pointer">SOS</button>
         </div>
 
-        <!-- Carte Animal (Rex) -->
         <div class="w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-lg animal-card">
             <div class="relative h-64 bg-slate-900">
                 <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=600" alt="Rex" class="w-full h-full object-cover">
@@ -166,49 +160,90 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg cursor-pointer">✕</button>
+            
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xl font-bold">🐾</div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Espace Refuges</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Connectez-vous pour gérer vos pensionnaires.</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email du refuge</label>
+                    <input type="email" required placeholder="contact@refuge.fr" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mot de passe</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-600">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all cursor-pointer">
+                    Se connecter à l'espace
+                </button>
+            </form>
+        </div>
+    </div>
+
     <footer class="w-full py-6 text-center text-xs text-slate-400 dark:text-slate-600 border-t border-slate-200/60 dark:border-slate-800/60">
         &copy; 2026 Patte Libre — Tous droits réservés.
     </footer>
 
-    <!-- Script JavaScript Intégré -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("Patte Libre — Système initialisé avec succès.");
-
-            // 1. Gestion du Dark Mode / Light Mode
+        // Gestion du Mode Sombre / Clair
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
             const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', () => {
-                    const isDark = document.documentElement.classList.toggle('dark');
-                    themeToggle.textContent = isDark ? '☀️' : '🌙';
-                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                });
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
 
-                if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                    themeToggle.textContent = '☀️';
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            const themeToggle = document.getElementById('themeToggle');
+            if(themeToggle) themeToggle.textContent = '☀️';
+        }
+
+        // Sélection des catégories
+        function selectCategory(card, categoryName) {
+            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('ring-2', 'ring-indigo-500'));
+            card.classList.add('ring-2', 'ring-indigo-500');
+        }
+
+        // Gestion des filtres rapides
+        function setFilter(button) {
+            if (button.classList.contains('bg-red-500')) return;
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (!btn.classList.contains('bg-red-500')) {
+                    btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                    btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
                 }
-            }
-
-            // 2. Gestion des filtres rapides
-            const filterButtons = document.querySelectorAll('.filter-badge');
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (!btn.classList.contains('bg-red-500')) {
-                        filterButtons.forEach(b => {
-                            if (!b.classList.contains('bg-red-500')) {
-                                b.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-                                b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-                            }
-                        });
-                        btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-                        btn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-                    }
-                });
             });
-        });
+
+            button.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+            button.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+        }
+
+        // Modal de Connexion
+        function openLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            alert("Connexion simulée avec succès ! Redirection vers le dashboard refuge...");
+            closeLoginModal();
+        }
     </script>
 </body>
 </html>
