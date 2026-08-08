@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patte Libre — Outil de recherche indépendant</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -20,40 +21,12 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-        html {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        .animal-card, .category-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .animal-card:hover, .category-card:hover {
-            transform: translateY(-4px);
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        html { font-family: 'Inter', system-ui, -apple-system, sans-serif; scroll-behavior: smooth; }
+        .animal-card, .category-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .animal-card:hover, .category-card:hover { transform: translateY(-4px); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between transition-colors duration-300">
@@ -70,180 +43,117 @@
             </div>
             
             <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 dark:text-slate-400">
-                <a href="#" class="text-indigo-600 dark:text-indigo-400 font-semibold">Home</a>
-                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">PatteLibre</a>
-                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Chiens</a>
-                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Chats</a>
-                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">NAC</a>
-                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Ferme</a>
-                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</a>
+                <a href="#" class="text-indigo-600 dark:text-indigo-400 font-semibold">Accueil</a>
+                <a href="#animalsSection" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Animaux</a>
+                <button id="navAddBtn" class="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold cursor-pointer">+ Ajouter</button>
+                <button id="navManageBtn" class="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold cursor-pointer">🛠️ Gérer mes annonces</button>
             </nav>
 
             <div class="flex items-center space-x-4">
-                <button id="themeToggle" onclick="toggleTheme()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm cursor-pointer" title="Changer de thème">🌙</button>
-                <button onclick="openLoginModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm transition-all cursor-pointer">Se connecter</button>
+                <button id="themeToggle" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm cursor-pointer" title="Changer de thème">🌙</button>
+                <button id="loginBtn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm transition-all cursor-pointer">Se connecter</button>
             </div>
         </header>
     </div>
 
-    <main class="max-w-5xl mx-auto px-4 py-12 flex flex-col items-center flex-grow w-full">
+    <main class="max-w-6xl mx-auto px-4 py-12 flex flex-col items-center flex-grow w-full">
         <div class="text-center max-w-xl mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">
                 Trouvez votre futur compagnon
             </h1>
             <p class="text-slate-500 dark:text-slate-400 text-sm md:text-base">
-                Choisissez une catégorie et les pauvres de mamis de futur compagnon.
+                Choisissez une catégorie et découvrez les pensionnaires de nos refuges partenaires.
             </p>
-            <div class="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold">
-                <span>Espace de volontariat !</span>
-                <span class="ml-1">Verrouiller la catégorie ›</span>
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+                <button id="heroAddBtn" class="inline-flex items-center px-4 py-2 rounded-full bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition-all shadow-sm cursor-pointer">
+                    + Poster une annonce
+                </button>
+                <button id="heroManageBtn" class="inline-flex items-center px-4 py-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold hover:bg-slate-300 dark:hover:bg-slate-700 transition-all cursor-pointer">
+                    🛠️ Gérer / Supprimer mes annonces
+                </button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full mb-12">
-            <div onclick="selectCategory(this, 'Chiens')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group" data-category="Chiens">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐶</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Chiens</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Compagnons fidèles</p>
             </div>
-
-            <div onclick="selectCategory(this, 'Chats')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group" data-category="Chats">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐱</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Chats</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Boules de poils</p>
             </div>
-
-            <div onclick="selectCategory(this, 'NAC')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group" data-category="NAC">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-purple-50 dark:bg-purple-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐰</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">NAC</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Nouveaux animaux</p>
             </div>
-
-            <div onclick="selectCategory(this, 'Ferme')" class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group" data-category="Ferme">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐐</div>
                 <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Ferme</h2>
                 <p class="text-xs text-slate-400 dark:text-slate-500">Grands espaces</p>
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition-all shadow-sm cursor-pointer">Tous</button>
-            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Bébés</button>
-            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Adultes</button>
-            <button onclick="setFilter(this)" class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-red-500 text-white transition-all shadow-sm cursor-pointer">SOS</button>
-        </div>
-
-        <div class="w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-lg animal-card">
-            <div class="relative h-64 bg-slate-900">
-                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=600" alt="Rex" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-                <div class="absolute top-4 left-4 bg-slate-900/60 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-medium">3 ans</div>
-                <div class="absolute bottom-4 left-4 text-white">
-                    <h3 class="text-2xl font-black tracking-wide">Rex</h3>
-                </div>
-            </div>
-            <div class="p-6">
-                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Berger Allemand</span>
-                <div class="mt-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500">Refuge d'accueil</p>
-                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">Refuge de Paris (Gennevilliers)</p>
-                </div>
-                <div class="mt-4">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500">À propos</p>
-                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Un chien très joueur, adore les balades et l'eau.</p>
-                </div>
-                <button class="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer">
-                    <span>Voir l'annonce officielle</span>
-                    <span>↗</span>
-                </button>
-            </div>
+        <div id="animalsSection" class="w-full">
+            <h2 class="text-xl font-bold mb-6 text-slate-900 dark:text-white">🐾 Pensionnaires enregistrés</h2>
+            <div id="animalsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
         </div>
     </main>
 
-    <div id="loginModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative animate-in fade-in zoom-in duration-200">
-            <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg cursor-pointer">✕</button>
-            
+    <!-- Modals -->
+    <div id="addAnimalModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 max-w-lg w-full shadow-2xl relative my-8">
+            <button id="closeAddModal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg cursor-pointer">✕</button>
             <div class="text-center mb-6">
-                <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xl font-bold">🐾</div>
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Espace Refuges</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Connectez-vous pour gérer vos pensionnaires.</p>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Publier un pensionnaire</h2>
             </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email du refuge</label>
-                    <input type="email" required placeholder="contact@refuge.fr" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-600">
+            <form id="addAnimalForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-semibold text-slate-500 mb-1">Nom</label><input type="text" id="animalName" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-slate-500 mb-1">Âge</label><input type="text" id="animalAge" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mot de passe</label>
-                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-600">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-semibold text-slate-500 mb-1">Race</label><input type="text" id="animalBreed" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-slate-500 mb-1">Refuge</label><input type="text" id="animalShelter" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
                 </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md transition-all cursor-pointer">
-                    Se connecter à l'espace
-                </button>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">URL de la photo</label><input type="url" id="animalImage" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Lien de l'annonce officielle</label><input type="url" id="animalLink" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Description</label><textarea id="animalDesc" rows="3" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm resize-none"></textarea></div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm cursor-pointer">Enregistrer et publier</button>
             </form>
         </div>
     </div>
 
-    <footer class="w-full py-6 text-center text-xs text-slate-400 dark:text-slate-600 border-t border-slate-200/60 dark:border-slate-800/60">
+    <div id="manageAnimalsModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 max-w-xl w-full shadow-2xl relative my-8">
+            <button id="closeManageModal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg cursor-pointer">✕</button>
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Gérer mes annonces</h2>
+            </div>
+            <div id="manageAnimalsList" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            <button id="closeLoginModal" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg cursor-pointer">✕</button>
+            <div class="text-center mb-6"><h2 class="text-2xl font-bold text-slate-900 dark:text-white">Espace Refuges</h2></div>
+            <form id="loginForm" class="space-y-4">
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Email</label><input type="email" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Mot de passe</label><input type="password" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm cursor-pointer">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="w-full py-6 text-center text-xs text-slate-400 dark:text-slate-600 border-t border-slate-200/60 dark:border-slate-800/60 mt-12">
         &copy; 2026 Patte Libre — Tous droits réservés.
     </footer>
 
-    <script>
-        // Gestion du Mode Sombre / Clair
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            const themeToggle = document.getElementById('themeToggle');
-            if(themeToggle) themeToggle.textContent = '☀️';
-        }
-
-        // Sélection des catégories
-        function selectCategory(card, categoryName) {
-            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('ring-2', 'ring-indigo-500'));
-            card.classList.add('ring-2', 'ring-indigo-500');
-        }
-
-        // Gestion des filtres rapides
-        function setFilter(button) {
-            if (button.classList.contains('bg-red-500')) return;
-
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (!btn.classList.contains('bg-red-500')) {
-                    btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
-                    btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-                }
-            });
-
-            button.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-            button.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
-        }
-
-        // Modal de Connexion
-        function openLoginModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeLoginModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-        }
-
-        function handleLogin(event) {
-            event.preventDefault();
-            alert("Connexion simulée avec succès ! Redirection vers le dashboard refuge...");
-            closeLoginModal();
-        }
-    </script>
+    <!-- Lien vers le fichier JavaScript séparé -->
+    <script src="script.js"></script>
 </body>
 </html>
