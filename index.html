@@ -4,105 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patte Libre — Outil de recherche indépendant</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         primary: '#4f46e5',
                         primaryHover: '#4338ca',
-                        softBg: '#f8fafc',
-                        cardBorder: '#e2e8f0'
                     }
                 }
             }
         }
     </script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between transition-colors duration-300">
 
     <!-- Header & Bandeau d'avertissement -->
     <div>
-        <!-- Bandeau d'avertissement légal -->
-        <div class="bg-amber-50 border-b border-amber-200 py-2 px-4 text-center text-xs text-amber-800 font-medium">
+        <div class="bg-amber-50 dark:bg-amber-950/50 border-b border-amber-200 dark:border-amber-900 py-2 px-4 text-center text-xs text-amber-800 dark:text-amber-300 font-medium">
             ⚠️ <strong>Avertissement :</strong> Ce site n'est en AUCUN cas un site officiel. Outil de recherche indépendant.
         </div>
 
-        <!-- Navigation principale -->
         <header class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold">🐾</div>
-                <span class="font-bold text-lg tracking-tight text-slate-900">Patte Libre</span>
+                <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold">🐾</div>
+                <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">Patte Libre</span>
             </div>
             
-            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
-                <a href="#" class="text-indigo-600 font-semibold">Home</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">PatteLibre</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">Chiens</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">Chats</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">NAC</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">Ferme</a>
-                <a href="#" class="hover:text-indigo-600 transition-colors">Contact</a>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600 dark:text-slate-400">
+                <a href="#" class="text-indigo-600 dark:text-indigo-400 font-semibold nav-link">Home</a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors nav-link">PatteLibre</a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors nav-link">Chiens</a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors nav-link">Chats</a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors nav-link">NAC</a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors nav-link">Ferme</a>
+                <a href="#" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors nav-link">Contact</a>
             </nav>
 
             <div class="flex items-center space-x-4">
-                <button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors text-sm">🌙</button>
-                <a href="#" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm shadow-indigo-200 transition-all">Se connecter</a>
+                <button id="themeToggle" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm cursor-pointer" title="Changer de thème">🌙</button>
+                <a href="#" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm shadow-indigo-200 dark:shadow-none transition-all">Se connecter</a>
             </div>
         </header>
     </div>
 
-    <!-- Contenu Principal : Accueil & Sélection -->
-    <main class="max-w-5xl mx-auto px-4 py-12 flex flex-col items-center flex-grow">
+    <!-- Contenu Principal -->
+    <main class="max-w-5xl mx-auto px-4 py-12 flex flex-col items-center flex-grow w-full">
         <div class="text-center max-w-xl mb-10">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">
                 Trouvez votre futur compagnon
             </h1>
-            <p class="text-slate-500 text-sm md:text-base">
+            <p class="text-slate-500 dark:text-slate-400 text-sm md:text-base">
                 Choisissez une catégorie et les pauvres de mamis de futur compagnon.
             </p>
-            <div class="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold">
+            <div class="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold">
                 <span>Espace de volontariat !</span>
                 <span class="ml-1">Verrouiller la catégorie ›</span>
             </div>
         </div>
 
         <!-- Grille des Catégories -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
-            <!-- Carte Chiens -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-6 text-center shadow-sm hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐶</div>
-                <h2 class="font-bold text-slate-900 text-lg mb-1">Chiens</h2>
-                <p class="text-xs text-slate-400">Compagnons fidèles</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full mb-12">
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐶</div>
+                <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Chiens</h2>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Compagnons fidèles</p>
             </div>
 
-            <!-- Carte Chats -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-6 text-center shadow-sm hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-orange-50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐱</div>
-                <h2 class="font-bold text-slate-900 text-lg mb-1">Chats</h2>
-                <p class="text-xs text-slate-400"> Boules de poils</p>
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐱</div>
+                <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Chats</h2>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Boules de poils</p>
             </div>
 
-            <!-- Carte NAC -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-6 text-center shadow-sm hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-purple-50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐰</div>
-                <h2 class="font-bold text-slate-900 text-lg mb-1">NAC</h2>
-                <p class="text-xs text-slate-400">Nouveaux animaux</p>
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-purple-50 dark:bg-purple-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐰</div>
+                <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">NAC</h2>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Nouveaux animaux</p>
             </div>
 
-            <!-- Carte Ferme -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-6 text-center shadow-sm hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐐</div>
-                <h2 class="font-bold text-slate-900 text-lg mb-1">Ferme</h2>
-                <p class="text-xs text-slate-400">Grands espaces</p>
+            <div class="category-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 text-center shadow-sm hover:shadow-md cursor-pointer group">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">🐐</div>
+                <h2 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Ferme</h2>
+                <p class="text-xs text-slate-400 dark:text-slate-500">Grands espaces</p>
             </div>
         </div>
 
-        <!-- Exemple de Carte Animal (Type Rex) pour démonstration de la page de résultats -->
-        <div class="mt-16 w-full max-w-sm bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-lg">
+        <!-- Filtres Rapides interactifs -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition-all shadow-sm">Tous</button>
+            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Bébés</button>
+            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Adultes</button>
+            <button class="filter-badge px-4 py-2 rounded-xl text-xs font-semibold bg-red-500 text-white transition-all shadow-sm">SOS</button>
+        </div>
+
+        <!-- Carte Animal (Rex) -->
+        <div class="w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-lg animal-card">
             <div class="relative h-64 bg-slate-900">
-                <!-- Image d'illustration chien -->
                 <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=600" alt="Rex" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
                 <div class="absolute top-4 left-4 bg-slate-900/60 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-medium">3 ans</div>
@@ -111,16 +113,16 @@
                 </div>
             </div>
             <div class="p-6">
-                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Berger Allemand</span>
-                <div class="mt-4 bg-slate-50 border border-slate-100 rounded-xl p-3">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Refuge d'accueil</p>
-                    <p class="text-sm font-semibold text-slate-800">Refuge de Paris (Gennevilliers)</p>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Berger Allemand</span>
+                <div class="mt-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl p-3">
+                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500">Refuge d'accueil</p>
+                    <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">Refuge de Paris (Gennevilliers)</p>
                 </div>
                 <div class="mt-4">
-                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400">À propos</p>
-                    <p class="text-xs text-slate-600 mt-0.5">Un chien très joueur, adore les balades et l'eau.</p>
+                    <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400 dark:text-slate-500">À propos</p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Un chien très joueur, adore les balades et l'eau.</p>
                 </div>
-                <button class="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 transition-all flex items-center justify-center space-x-2">
+                <button class="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 dark:shadow-none transition-all flex items-center justify-center space-x-2 cursor-pointer">
                     <span>Voir l'annonce officielle</span>
                     <span>↗</span>
                 </button>
@@ -129,9 +131,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="w-full py-6 text-center text-xs text-slate-400 border-t border-slate-200/60">
+    <footer class="w-full py-6 text-center text-xs text-slate-400 dark:text-slate-600 border-t border-slate-200/60 dark:border-slate-800/60">
         &copy; 2026 Patte Libre — Tous droits réservés.
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
