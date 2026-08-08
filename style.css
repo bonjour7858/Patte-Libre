@@ -1,38 +1,23 @@
 
+/* style.css — Styles personnalisés pour Patte Libre */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --bg-main: #f8fafc;
-    --text-main: #1e293b;
+html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
 }
 
-body {
-    font-family: var(--font-sans);
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    overflow-x: hidden;
-}
-
-.animal-card {
+/* Effets fluides pour les cartes */
+.animal-card, .category-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.animal-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(79, 70, 229, 0.04);
+.animal-card:hover, .category-card:hover {
+    transform: translateY(-4px);
 }
 
-
-.badge-sos {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
+/* Barre de défilement personnalisée */
 ::-webkit-scrollbar {
     width: 8px;
 }
