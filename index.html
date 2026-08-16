@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patte Libre - Adoption & Sauvetage Animalier</title>
     
-    <!-- Tailwind CSS (Design moderne) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -19,6 +19,9 @@
             }
         }
     </script>
+    
+    <!-- Fichier CSS personnalisé -->
+    <link rel="stylesheet" href="style.css">
     
     <!-- SDK Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -51,16 +54,16 @@
         </div>
 
         <!-- BARRE DE FILTRES -->
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm mb-8 space-y-4">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm mb-8 space-y-4 border border-gray-100 dark:border-gray-700">
             <!-- Filtres par Type -->
             <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Catégorie d'animal</p>
                 <div class="flex flex-wrap gap-2">
                     <button data-type="tous" class="active-filter px-4 py-2 text-sm font-semibold rounded-xl bg-teal-600 text-white transition">Tous</button>
-                    <button data-type="chien" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 transition">Chiens</button>
-                    <button data-type="chat" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 transition">Chats</button>
-                    <button data-type="nac" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 transition">NAC</button>
-                    <button data-type="ferme" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 transition">Ferme</button>
+                    <button data-type="chien" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Chiens</button>
+                    <button data-type="chat" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Chats</button>
+                    <button data-type="nac" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition">NAC</button>
+                    <button data-type="ferme" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Ferme</button>
                 </div>
             </div>
 
@@ -71,16 +74,15 @@
                 <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Profil</p>
                 <div class="flex flex-wrap gap-2">
                     <button data-sous-cat="tous" class="active-filter px-4 py-2 text-sm font-semibold rounded-xl bg-teal-600 text-white transition">Tous les profils</button>
-                    <button data-sous-cat="bebe" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 transition">Bébés</button>
-                    <button data-sous-cat="adulte" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 transition">Adultes</button>
+                    <button data-sous-cat="bebe" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Bébés</button>
+                    <button data-sous-cat="adulte" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition">Adultes</button>
                     <button data-sous-cat="sos" class="px-4 py-2 text-sm font-semibold rounded-xl bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300 hover:bg-rose-200 transition">🚨 SOS / Urgence</button>
                 </div>
             </div>
         </div>
 
-        <!-- GRILLE DES ANIMAUX (Injectée dynamiquement par script.js) -->
+        <!-- GRILLE DES ANIMAUX -->
         <div id="animaux-grille" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <!-- Chargement initial -->
             <p class="text-center col-span-full py-12 text-gray-400">Chargement des compagnons...</p>
         </div>
 
@@ -91,7 +93,7 @@
         <p>Patte Libre © 2026 - Plateforme solidaire de mise en relation avec les refuges.</p>
     </footer>
 
-    <!-- SCRIPT PRINCIPAL -->
+    <!-- SCRIPT JS -->
     <script src="script.js"></script>
 </body>
 </html>
