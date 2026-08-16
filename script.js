@@ -17,15 +17,34 @@ async function chargerAnimaux() {
     grille.innerHTML = "";
 
     data.forEach(animal => {
+        // Récupération sécurisée des infos du refuge lié
+        const refuge = animal.refuges || {};
+        const nomRefuge = refuge.nom || "Refuge inconnu";
+        const villeRefuge = refuge.ville || "";
+        const telRefuge = refuge.telephone || "";
+        const emailRefuge = refuge.email || "";
+
         const carte = document.createElement("div");
-        carte.className = "bg-white rounded-xl shadow-md overflow-hidden border border-gray-100";
+        carte.className = "bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 flex flex-col justify-between";
         carte.innerHTML = `
-            <img src="${animal.photo_url}" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/400x300?text=Pas+de+photo'">
-            <div class="p-4">
-                <span class="text-[10px] uppercase font-bold bg-teal-50 text-teal-600 px-2 py-0.5 rounded">${animal.type} • ${animal.sous_cat}</span>
-                <h3 class="font-bold text-lg mt-1">${animal.nom}</h3>
-                <p class="text-sm text-gray-600">${animal.race} (${animal.age})</p>
-                <p class="text-xs text-gray-500 mt-2 line-clamp-2">${animal.description}</p>
+            <div>
+                <!-- Image avec hauteur augmentée et bien ajustée -->
+                <img src="${animal.photo_url}" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/400x300?text=Pas+de+photo'">
+                <div class="p-5">
+                    <span class="text-[10px] uppercase font-bold bg-teal-50 text-teal-600 px-2.5 py-1 rounded-full">${animal.type} • ${animal.sous_cat}</span>
+                    <h3 class="font-bold text-xl mt-2 text-gray-800">${animal.nom}</h3>
+                    <p class="text-sm font-semibold text-gray-600">${animal.race} <span class="font-normal text-gray-400">(${animal.age})</span></p>
+                    <p class="text-xs text-gray-500 mt-3 line-clamp-3 leading-relaxed">${animal.description}</p>
+                </div>
+            </div>
+            
+            <!-- Bloc Contact du Refuge -->
+            <div class="bg-gray-50 p-4 border-t border-gray-100 text-xs space-y-2">
+                <p class="font-bold text-teal-700">📍 ${nomRefuge} ${villeRefuge ? '(' + villeRefuge + ')' : ''}</p>
+                <div class="flex flex-col gap-1 text-gray-600">
+                    ${telRefuge ? `<a href="tel:${telRefuge}" class="hover:text-teal-600 flex items-center gap-1 font-medium">📞 ${telRefuge}</a>` : ''}
+                    ${emailRefuge ? `<a href="mailto:${emailRefuge}" class="hover:text-teal-600 flex items-center gap-1 font-medium">✉️ ${emailRefuge}</a>` : ''}
+                </div>
             </div>
         `;
         grille.appendChild(carte);
