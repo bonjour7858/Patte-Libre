@@ -1,183 +1,147 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patte Libre - Adoption & Sauvetage Animalier</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Adoption d'Animaux - Refuge</title>
+    <!-- Tailwind CSS pour un design moderne et rapide -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        teal: { 600: '#0d9488', 700: '#0f766e' }
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Fichier CSS personnalisé -->
-    <link rel="stylesheet" href="style.css">
-    
     <!-- SDK Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
+<body class="bg-gray-50 text-gray-800 min-h-full flex flex-col">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+    <!-- En-tête / Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <span class="text-2xl font-black text-teal-600">🐾 Patte Libre</span>
-            </div>
-            <div class="flex items-center gap-3">
-                <button id="btn-ouvrir-form" class="bg-teal-600 hover:bg-teal-700 text-white text-xs md:text-sm font-bold py-2 px-4 rounded-xl transition shadow-sm">
-                    + Poster une annonce
-                </button>
-            </div>
+            <h1 class="text-2xl font-black text-teal-600 flex items-center gap-2">
+                🐾 Patte Libre
+            </h1>
+            <button id="btn-ouvrir-form" class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition shadow-sm">
+                + Ajouter une annonce
+            </button>
         </div>
     </header>
 
-    <!-- MODALE / FORMULAIRE D'AJOUT -->
-    <div id="form-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-xl border border-gray-100 dark:border-gray-700 my-8">
+    <!-- Contenu Principal -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- Barre de filtres par Type -->
+        <div class="flex flex-wrap gap-2 mb-6" id="filtres-type">
+            <button data-type="tous" class="active-filter bg-teal-600 text-white text-xs font-bold px-4 py-2 rounded-full transition">Tous</button>
+            <button data-type="chien" class="bg-gray-100 text-gray-700 text-xs font-bold px-4 py-2 rounded-full hover:bg-gray-200 transition">Chiens</button>
+            <button data-type="chat" class="bg-gray-100 text-gray-700 text-xs font-bold px-4 py-2 rounded-full hover:bg-gray-200 transition">Chats</button>
+            <button data-type="nac" class="bg-gray-100 text-gray-700 text-xs font-bold px-4 py-2 rounded-full hover:bg-gray-200 transition">NAC</button>
+        </div>
+
+        <!-- Sous-catégories -->
+        <div class="flex flex-wrap gap-2 mb-8" id="filtres-sous-cat">
+            <button data-sous-cat="tous" class="active-filter bg-teal-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">Toutes les catégories</button>
+            <button data-sous-cat="bebe" class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">Bébés</button>
+            <button data-sous-cat="adulte" class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">Adultes</button>
+            <button data-sous-cat="sos" class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">SOS</button>
+        </div>
+
+        <!-- Grille des animaux -->
+        <div id="animaux-grille" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Les cartes des animaux s'injecteront dynamiquement ici via le script.js -->
+        </div>
+    </main>
+
+    <!-- Formulaire Modal d'Ajout d'Annonce -->
+    <div id="form-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold">Publier une annonce d'animal</h3>
-                <button id="btn-fermer-form" class="text-gray-400 hover:text-gray-600 font-bold text-xl">×</button>
+                <h2 class="text-xl font-bold text-gray-800">Ajouter un animal à l'adoption</h2>
+                <button id="btn-fermer-form" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
             </div>
             
             <form id="form-ajout-animal" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Nom du refuge</label>
-                    <input type="text" id="refuge-nom" required placeholder="Ex: Refuge de Rouen" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Nom de l'animal</label>
+                    <input type="text" id="animal-nom" required placeholder="Ex: Simba" class="w-full px-3 py-2 rounded-lg border text-sm">
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Ville du refuge</label>
-                        <input type="text" id="refuge-ville" required placeholder="Ex: Rouen (76)" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Téléphone</label>
-                        <input type="text" id="refuge-tel" required placeholder="06 12 34 56 78" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">E-mail de contact</label>
-                    <input type="email" id="refuge-email" required placeholder="contact@refuge.fr" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
-                </div>
-
-                <hr class="border-gray-200 dark:border-gray-700">
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Nom de l'animal</label>
-                        <input type="text" id="animal-nom" required placeholder="Ex: Simba" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Race / Espèce</label>
-                        <input type="text" id="animal-race" required placeholder="Ex: Européen" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Catégorie (Type)</label>
-                        <select id="animal-type" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Type</label>
+                        <select id="animal-type" required class="w-full px-3 py-2 rounded-lg border text-sm bg-white">
                             <option value="chien">Chien</option>
                             <option value="chat">Chat</option>
                             <option value="nac">NAC</option>
-                            <option value="ferme">Ferme</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Profil (Sous-catégorie)</label>
-                        <select id="animal-sous-cat" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Catégorie</label>
+                        <select id="animal-sous-cat" required class="w-full px-3 py-2 rounded-lg border text-sm bg-white">
                             <option value="bebe">Bébé</option>
                             <option value="adulte">Adulte</option>
-                            <option value="sos">SOS / Urgence</option>
+                            <option value="sos">SOS</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Âge</label>
-                        <input type="text" id="animal-age" required placeholder="Ex: 8 mois ou 2 ans" class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Race</label>
+                        <input type="text" id="animal-race" required placeholder="Ex: Européen" class="w-full px-3 py-2 rounded-lg border text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Lien de la photo</label>
-                        <input type="url" id="animal-photo" required placeholder="https://..." class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm">
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Âge</label>
+                        <input type="text" id="animal-age" required placeholder="Ex: 4 mois" class="w-full px-3 py-2 rounded-lg border text-sm">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Description / Histoire</label>
-                    <textarea id="animal-desc" rows="3" required placeholder="Décrivez le caractère de l'animal..." class="w-full px-3 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600 text-sm"></textarea>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Lien de la photo (URL directe)</label>
+                    <input type="url" id="animal-photo-url" required placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 rounded-lg border text-sm">
+                    <p class="text-[10px] text-gray-400 mt-1">Astuce : Clic droit sur une image sur internet > "Copier l'adresse de l'image"</p>
                 </div>
 
-                <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 rounded-xl transition shadow-sm text-sm">
-                    Valider et publier l'annonce
-                </button>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Description</label>
+                    <textarea id="animal-desc" required placeholder="Décrivez son caractère, ses besoins..." rows="3" class="w-full px-3 py-2 rounded-lg border text-sm"></textarea>
+                </div>
+
+                <hr class="my-4 border-gray-100">
+                <h3 class="text-sm font-bold text-teal-600 uppercase">Informations du Refuge</h3>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Nom du refuge</label>
+                        <input type="text" id="refuge-nom" required placeholder="Nom du refuge" class="w-full px-3 py-2 rounded-lg border text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Ville</label>
+                        <input type="text" id="refuge-ville" required placeholder="Ex: Rouen" class="w-full px-3 py-2 rounded-lg border text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Téléphone</label>
+                        <input type="tel" id="refuge-tel" required placeholder="06 00 00 00 00" class="w-full px-3 py-2 rounded-lg border text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-500 mb-1">E-mail</label>
+                        <input type="email" id="refuge-email" required placeholder="contact@refuge.fr" class="w-full px-3 py-2 rounded-lg border text-sm">
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 pt-2">
+                    <button type="button" id="btn-fermer-form" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-bold py-2.5 rounded-lg transition">Annuler</button>
+                    <button type="submit" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold py-2.5 rounded-lg transition shadow-sm">Publier l'annonce</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
-        
-        <!-- SECTION HERO -->
-        <div class="text-center mb-10">
-            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Trouvez votre futur compagnon</h1>
-            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
-                Consultez les animaux à l'adoption près de chez vous et contactez directement les refuges partenaires en un clic.
-            </p>
-        </div>
-
-        <!-- BARRE DE FILTRES -->
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm mb-8 space-y-4 border border-gray-100 dark:border-gray-700">
-            <!-- Filtres par Type -->
-            <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Catégorie d'animal</p>
-                <div class="flex flex-wrap gap-2">
-                    <button data-type="tous" class="active-filter px-4 py-2 text-sm font-semibold rounded-xl bg-teal-600 text-white transition">Tous</button>
-                    <button data-type="chien" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition">Chiens</button>
-                    <button data-type="chat" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition">Chats</button>
-                    <button data-type="nac" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition">NAC</button>
-                    <button data-type="ferme" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition">Ferme</button>
-                </div>
-            </div>
-
-            <hr class="border-gray-100 dark:border-gray-700">
-
-            <!-- Filtres par Profil (Sous-catégorie) -->
-            <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Profil</p>
-                <div class="flex flex-wrap gap-2">
-                    <button data-sous-cat="tous" class="active-filter px-4 py-2 text-sm font-semibold rounded-xl bg-teal-600 text-white transition">Tous les profils</button>
-                    <button data-sous-cat="bebe" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition">Bébés</button>
-                    <button data-sous-cat="adulte" class="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition">Adultes</button>
-                    <button data-sous-cat="sos" class="px-4 py-2 text-sm font-semibold rounded-xl bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300 transition">🚨 SOS / Urgence</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- GRILLE DES ANIMAUX -->
-        <div id="animaux-grille" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <p class="text-center col-span-full py-12 text-gray-400">Chargement des compagnons...</p>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 mt-12 py-6 text-center text-xs text-gray-500">
-        <p>Patte Libre © 2026 - Plateforme solidaire de mise en relation avec les refuges.</p>
+    <!-- Pied de page -->
+    <footer class="bg-white border-t border-gray-200 mt-auto py-6 text-center text-xs text-gray-500">
+        <p>Patte Libre &copy; 2026 - Tous droits réservés</p>
     </footer>
 
-    <!-- SCRIPT JS -->
+    <!-- Script principal -->
     <script src="script.js"></script>
 </body>
 </html>
