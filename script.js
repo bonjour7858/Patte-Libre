@@ -46,22 +46,24 @@ function initialiserFormulaire() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         
-        // Sécurité anti-crash : vérification que les éléments existent bien
-        const nomAnimal = document.getElementById("animal-nom")?.value;
-        const raceAnimal = document.getElementById("animal-race")?.value;
-        const typeAnimal = document.getElementById("animal-type")?.value;
-        const sousCatAnimal = document.getElementById("animal-sous-cat")?.value;
-        const ageAnimal = document.getElementById("animal-age")?.value;
-        const photoUrl = document.getElementById("animal-photo-url")?.value;
-        const descAnimal = document.getElementById("animal-desc")?.value;
+        // Récupération sécurisée avec vérification
+        const getVal = (id) => document.getElementById(id)?.value || "";
 
-        const nomRefuge = document.getElementById("refuge-nom")?.value;
-        const villeRefuge = document.getElementById("refuge-ville")?.value;
-        const telRefuge = document.getElementById("refuge-tel")?.value;
-        const emailRefuge = document.getElementById("refuge-email")?.value;
+        const nomAnimal = getVal("animal-nom");
+        const raceAnimal = getVal("animal-race");
+        const typeAnimal = getVal("animal-type");
+        const sousCatAnimal = getVal("animal-sous-cat");
+        const ageAnimal = getVal("animal-age");
+        const photoUrl = getVal("animal-photo-url");
+        const descAnimal = getVal("animal-desc");
+
+        const nomRefuge = getVal("refuge-nom");
+        const villeRefuge = getVal("refuge-ville");
+        const telRefuge = getVal("refuge-tel");
+        const emailRefuge = getVal("refuge-email");
 
         if (!nomAnimal || !photoUrl || !nomRefuge) {
-            alert("Veuillez remplir tous les champs obligatoires.");
+            alert("Veuillez remplir les champs obligatoires.");
             return;
         }
 
