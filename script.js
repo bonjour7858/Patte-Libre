@@ -5,13 +5,17 @@ const SUPABASE_URL = 'https://wedwqeblftbzfiuvhxee.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_CgT8B1J92juKEl2wfvCxww_QQSQllTD';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Variables d'état
 let filtreTypeActuel = 'tous';       
 let filtreSousCatActuelle = 'tous';  
 let mockData = [];                   
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Chargement des données depuis Supabase
+    await chargerAnimaux();
+    initialiserInterface();
+    initialiserFormulaire();
+});
+
+async function chargerAnimaux() {
     const { data, error } = await supabase
         .from('animaux')
         .select(`
@@ -24,6 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             photo_url,
             description,
             refuges (
+                id,
                 nom,
                 ville,
                 departement,
@@ -50,10 +55,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             refugeEmail: item.refuges?.email || "Non communiqué"
         }));
     }
-
-    initialiserInterface();
     chargerGrille();
-});
+}
 
 function chargerGrille() {
     const grille = document.getElementById("animaux-grille");
@@ -74,7 +77,7 @@ function chargerGrille() {
 
     donneesFiltrees.forEach(animal => {
         const carte = document.createElement("div");
-        carte.className = "animal-card";
+        carte.className = "bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden flex flex-col justify-between border border-gray-100 dark:border-gray-700 transition hover:shadow-lg";
         
         carte.innerHTML = `
             <div>
@@ -112,8 +115,12 @@ function initialiserInterface() {
     const boutonsType = document.querySelectorAll("[data-type]");
     boutonsType.forEach(btn => {
         btn.addEventListener("click", (e) => {
-            boutonsType.forEach(b => b.classList.remove("active-filter"));
-            e.currentTarget.classList.add("active-filter");
+            boutonsType.forEach(b => b.classList.remove("active-filter", "bg-teal-600", "text-white"));
+            boutonsType.forEach(b => b.classList.add("bg-gray-100", "dark:bg-gray-700", "text-gray-700", "dark:text-gray-200"));
+            
+            e.currentTarget.classList.remove("bg-gray-100", "dark:bg-gray-700", "text-gray-700", "dark:text-gray-200");
+            e.currentTarget.classList.add("active-filter", "bg-teal-600", "text-white");
+            
             filtreTypeActuel = e.currentTarget.getAttribute("data-type");
             chargerGrille();
         });
@@ -123,10 +130,68 @@ function initialiserInterface() {
     const boutonsSousCat = document.querySelectorAll("[data-sous-cat]");
     boutonsSousCat.forEach(btn => {
         btn.addEventListener("click", (e) => {
-            boutonsSousCat.forEach(b => b.classList.remove("active-filter"));
-            e.currentTarget.classList.add("active-filter");
+            boutonsSousCat.forEach(b => b.classList.remove("active-filter", "bg-teal-600", "text-white"));
+            boutonsSousCat.forEach(b => b.classList.add("bg-gray-100", "dark:bg-gray-700", "text-gray-700", "dark:text-gray-200"));
+            
+            e.currentTarget.classList.remove("bg-gray-100", "dark:bg-gray-700", "text-gray-700", "dark:text-gray-200");
+            e.currentTarget.classList.add("active-filter", "bg-teal-600", "text-white");
+            
             filtreSousCatActuelle = e.currentTarget.getAttribute("data-sous-cat");
             chargerGrille();
         });
+    });
+}
+
+function initialiserFormulaire() {
+    const modal = document.getElementById("form-modal");
+    const btnOuvrir = document.getElementById("btn-ouvrir-form");
+    const btnFermer = document.getElementById("btn-fermer-form");
+    const form = document.getElementById("form-ajout-animal");
+
+    btnOuvrir.addEventListener("click", () => modal.classList.remove("hidden"));
+    btnFermer.addEventListener("click", () => modal.classList.add("hidden"));
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // 1. Créer d'abord le refuge dans Supabase
+        const { data: refugeData, error: refugeError } = await supabase
+            .from('refuges')
+            .insert([{
+                nom: document.getElementById("refuge-nom").value,
+                ville: document.getElementById("refuge-ville").value,
+                telephone: document.getElementById("refuge-tel").value,
+                email: document.getElementById("refuge-email").value
+            }])
+            .select()
+            .single();
+
+        if (refugeError) {
+            alert("Erreur lors de l'enregistrement du refuge : " + refugeError.message);
+            return;
+        }
+
+        // 2. Créer l'animal lié à ce refuge
+        const { error: animalError } = await supabase
+            .from('animaux')
+            .insert([{
+                refuge_id: refugeData.id,
+                nom: document.getElementById("animal-nom").value,
+                race: document.getElementById("animal-race").value,
+                type: document.getElementById("animal-type").value,
+                sous_cat: document.getElementById("animal-sous-cat").value,
+                age: document.getElementById("animal-age").value,
+                photo_url: document.getElementById("animal-photo").value,
+                description: document.getElementById("animal-desc").value
+            }]);
+
+        if (animalError) {
+            alert("Erreur lors de l'enregistrement de l'animal : " + animalError.message);
+        } else {
+            alert("Annonce publiée avec succès ! 🎉");
+            form.reset();
+            modal.classList.add("hidden");
+            chargerAnimaux(); // Recharge la liste des animaux sur la page
+        }
     });
 }
