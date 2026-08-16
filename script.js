@@ -1,9 +1,14 @@
 // ==========================================
-// CONFIGURATION SUPABASE
+// CONFIGURATION SUPABASE (Version sécurisée)
 // ==========================================
 const SUPABASE_URL = 'https://wedwqeblftbzfiuvhxee.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_CgT8B1J92juKEl2wfvCxww_QQSQllTD';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// On vérifie si le client n'est pas déjà initialisé pour éviter le doublon
+let supabaseClient;
+if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
 
 let filtreTypeActuel = 'tous';       
 let filtreSousCatActuelle = 'tous';  
@@ -16,7 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function chargerAnimaux() {
-    const { data, error } = await supabase
+    if (!supabaseClient) return;
+
+    const { data, error } = await supabaseClient
         .from('animaux')
         .select(`
             id,
@@ -111,7 +118,6 @@ function chargerGrille() {
 }
 
 function initialiserInterface() {
-    // Boutons de type
     const boutonsType = document.querySelectorAll("[data-type]");
     boutonsType.forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -126,7 +132,6 @@ function initialiserInterface() {
         });
     });
 
-    // Boutons de sous-catégorie
     const boutonsSousCat = document.querySelectorAll("[data-sous-cat]");
     boutonsSousCat.forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -148,14 +153,16 @@ function initialiserFormulaire() {
     const btnFermer = document.getElementById("btn-fermer-form");
     const form = document.getElementById("form-ajout-animal");
 
+    if (!btnOuvrir || !modal || !form) return;
+
     btnOuvrir.addEventListener("click", () => modal.classList.remove("hidden"));
     btnFermer.addEventListener("click", () => modal.classList.add("hidden"));
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (!supabaseClient) return;
 
-        // 1. Créer d'abord le refuge dans Supabase
-        const { data: refugeData, error: refugeError } = await supabase
+        const { data: refugeData, error: refugeError } = await supabaseClient
             .from('refuges')
             .insert([{
                 nom: document.getElementById("refuge-nom").value,
@@ -171,8 +178,7 @@ function initialiserFormulaire() {
             return;
         }
 
-        // 2. Créer l'animal lié à ce refuge
-        const { error: animalError } = await supabase
+        const { error: animalError } = await supabaseClient
             .from('animaux')
             .insert([{
                 refuge_id: refugeData.id,
@@ -191,7 +197,7 @@ function initialiserFormulaire() {
             alert("Annonce publiée avec succès ! 🎉");
             form.reset();
             modal.classList.add("hidden");
-            chargerAnimaux(); // Recharge la liste des animaux sur la page
+            chargerAnimaux();
         }
     });
 }
