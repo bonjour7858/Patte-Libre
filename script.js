@@ -1,19 +1,17 @@
-
+// ==========================================
+// CONFIGURATION SUPABASE
+// ==========================================
 const SUPABASE_URL = 'https://wedwqeblftbzfiuvhxee.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_CgT8B1J92juKEl2wfvCxww_QQSQllTD';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
+// Variables d'état
 let filtreTypeActuel = 'tous';       
-let filtreSousCatActuelle = 'tous'; 
+let filtreSousCatActuelle = 'tous';  
 let mockData = [];                   
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-    if (localStorage.getItem("theme") === "dark") {
-        document.documentElement.classList.add("dark");
-    }
-    
+    // Chargement des données depuis Supabase
     const { data, error } = await supabase
         .from('animaux')
         .select(`
@@ -35,12 +33,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         `);
 
     if (error) {
-        console.error("Erreur lors du chargement depuis Supabase :", error);
+        console.error("Erreur de chargement Supabase :", error);
     } else {
         mockData = data.map(item => ({
             id: item.id,
-            type: item.type.toLowerCase().trim(),        
-            sous_cat: item.sous_cat.toLowerCase().trim(), 
+            type: (item.type || '').toLowerCase().trim(),
+            sous_cat: (item.sous_cat || '').toLowerCase().trim(),
             nom: item.nom,
             race: item.race || 'Race non spécifiée',
             age: item.age || 'Âge non renseigné',
@@ -57,9 +55,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     chargerGrille();
 });
 
-
 function chargerGrille() {
-    const grille = document.getElementById("animaux-grille"); // Assure-toi que c'est bien l'ID de ton conteneur HTML
+    const grille = document.getElementById("animaux-grille");
     if (!grille) return;
 
     grille.innerHTML = "";
@@ -71,19 +68,19 @@ function chargerGrille() {
     });
 
     if (donneesFiltrees.length === 0) {
-        grille.innerHTML = `<p class="text-center col-span-full py-8 text-gray-500">Aucun animal ne correspond à cette recherche pour le moment.</p>`;
+        grille.innerHTML = `<p class="text-center col-span-full py-12 text-gray-500">Aucun animal ne correspond à cette recherche pour le moment.</p>`;
         return;
     }
 
     donneesFiltrees.forEach(animal => {
         const carte = document.createElement("div");
-        carte.className = "bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden flex flex-col justify-between transition hover:shadow-lg";
+        carte.className = "animal-card";
         
         carte.innerHTML = `
             <div>
-                <div class="relative h-48 overflow-hidden">
+                <div class="relative h-48 overflow-hidden bg-gray-200 dark:bg-gray-700">
                     <img src="${animal.photo}" alt="${animal.nom}" class="w-full h-full object-cover">
-                    <span class="absolute top-3 right-3 bg-teal-600 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase">
+                    <span class="absolute top-3 right-3 bg-teal-600 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase shadow">
                         ${animal.sous_cat}
                     </span>
                 </div>
@@ -95,9 +92,9 @@ function chargerGrille() {
                 </div>
             </div>
             <div class="p-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
-                <div class="text-xs font-semibold text-teal-700 dark:text-teal-400 mb-2">📍 ${animal.refugeNom} (${animal.refugeVille})</div>
+                <div class="text-xs font-semibold text-teal-700 dark:text-teal-400 mb-3">📍 ${animal.refugeNom} (${animal.refugeVille})</div>
                 <div class="flex gap-2">
-                    <a href="tel:${animal.refugeTel}" class="flex-1 text-center bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold py-2 px-3 rounded-lg transition">
+                    <a href="tel:${animal.refugeTel}" class="flex-1 text-center bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold py-2 px-3 rounded-lg transition shadow-sm">
                         📞 Appeler
                     </a>
                     <a href="mailto:${animal.refugeEmail}" class="flex-1 text-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-white text-xs font-bold py-2 px-3 rounded-lg transition">
@@ -111,22 +108,24 @@ function chargerGrille() {
 }
 
 function initialiserInterface() {
+    // Boutons de type
     const boutonsType = document.querySelectorAll("[data-type]");
     boutonsType.forEach(btn => {
         btn.addEventListener("click", (e) => {
             boutonsType.forEach(b => b.classList.remove("active-filter"));
-            e.target.classList.add("active-filter");
-            filtreTypeActuel = e.target.getAttribute("data-type");
+            e.currentTarget.classList.add("active-filter");
+            filtreTypeActuel = e.currentTarget.getAttribute("data-type");
             chargerGrille();
         });
     });
 
+    // Boutons de sous-catégorie
     const boutonsSousCat = document.querySelectorAll("[data-sous-cat]");
     boutonsSousCat.forEach(btn => {
         btn.addEventListener("click", (e) => {
             boutonsSousCat.forEach(b => b.classList.remove("active-filter"));
-            e.target.classList.add("active-filter");
-            filtreSousCatActuelle = e.target.getAttribute("data-sous-cat");
+            e.currentTarget.classList.add("active-filter");
+            filtreSousCatActuelle = e.currentTarget.getAttribute("data-sous-cat");
             chargerGrille();
         });
     });
