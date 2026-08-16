@@ -20,7 +20,7 @@ async function chargerAnimaux() {
         const carte = document.createElement("div");
         carte.className = "bg-white rounded-xl shadow-md overflow-hidden border border-gray-100";
         carte.innerHTML = `
-            <img src="${animal.photo_url}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400'">
+            <img src="${animal.photo_url}" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/400x300?text=Pas+de+photo'">
             <div class="p-4">
                 <span class="text-[10px] uppercase font-bold bg-teal-50 text-teal-600 px-2 py-0.5 rounded">${animal.type} • ${animal.sous_cat}</span>
                 <h3 class="font-bold text-lg mt-1">${animal.nom}</h3>
@@ -46,7 +46,6 @@ function initialiserFormulaire() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         
-        // Récupération sécurisée avec vérification
         const getVal = (id) => document.getElementById(id)?.value || "";
 
         const nomAnimal = getVal("animal-nom");
